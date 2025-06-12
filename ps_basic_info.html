@@ -119,12 +119,12 @@
   <header>
     <h1>Resumate</h1>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="info.html">Resume</a>
-      <a href="ps_basic_info.html">Personal Statement</a>
-      <a href="faq.html">FAQ</a>
-      <a href="contact.html">Contact</a>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="job_choose.html">Resume</a>
+        <a href="personal_statement_input.html">Personal Statement</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a> 
     </nav>
   </header>
 
@@ -145,9 +145,10 @@
       <label for="jobPosition">Job Position</label>
       <select id="jobPosition" name="jobPosition">
         <option value="">-- Select a Job --</option>
+        <option value="Software Engineer">Software Engineer</option>
         <option value="Sales Manager">Sales Manager</option>
         <option value="Language Teacher">Language Teacher</option>
-        <option value="Software Engineer">Software Engineer</option>
+        <option value="Overseas Sales">Overseas Sales</option>
       </select>
     </div>
     <div class="form-group">
@@ -219,7 +220,7 @@
         } else {
             document.getElementById('applicantName').value = '김민준';
             document.getElementById('companyName').value = 'Resumate Corp.';
-            document.getElementById('jobPosition').value = 'Software Engineer'; // 수정된 부분
+            document.getElementById('jobPosition').value = 'Software Engineer';
             document.getElementById('companyInterest').value = 'Resumate Corp.가 AI를 활용하여 개인의 커리어 성장을 돕는다는 비전에 깊이 공감합니다. 특히, 대규모 데이터를 처리하고 사용자에게 실시간으로 가치를 전달하는 기술적 도전을 통해 함께 성장하고 싶습니다. 또한, 개발 블로그를 통해 공유와 성장을 중요시하는 회사 문화에 큰 매력을 느꼈습니다.';
             document.getElementById('jobMotivation').value = '지난 2년간 백엔드 개발자로서 안정적인 시스템을 구축하는 경험을 쌓았습니다. 이제는 더 나아가 대용량 트래픽을 처리하는 확장성 높은 시스템을 설계하고 운영하는 전문가로 성장하고 싶습니다. Resumate의 서비스 환경이야말로 저의 기술적 성장을 위한 최고의 무대라고 생각하여 지원하게 되었습니다. 입사 후, 저의 문제 해결 능력과 시스템 최적화 경험을 바탕으로 서비스 안정성에 기여하고, 장기적으로는 데이터 기반의 새로운 피처 개발을 주도하는 개발자로 성장하고 싶습니다.';
             btn.textContent = 'Clear Example';
