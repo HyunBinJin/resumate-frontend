@@ -25,14 +25,22 @@
     
     main {
       display: flex;
+      /* ▼ 수정: flex-direction을 column으로 변경하여 자식요소(패널, 버튼)를 수직으로 정렬 */
+      flex-direction: column; 
       gap: 2rem;
       padding: 2rem;
       max-width: 1200px;
-      margin: 2rem auto;
-      align-items: stretch;
-      position: relative;
-      padding-bottom: 6rem;
+      /* ▼ 수정: fixed footer의 높이만큼 하단 마진을 주어 가려짐 방지 */
+      margin: 2rem auto 8rem; 
     }
+    
+    /* ▼ 추가: 두 개의 패널(입력, 결과)을 감싸는 래퍼 */
+    .panels-wrapper {
+        display: flex;
+        gap: 2rem;
+        align-items: stretch;
+    }
+
     .panel {
       background-color: white;
       padding: 2rem;
@@ -96,13 +104,14 @@
         box-sizing: border-box;
         background-color: #f8f9fa;
     }
+    
+    /* ▼ 수정: position: absolute를 제거하여 버튼이 문서 흐름에 포함되도록 변경 */
     .button-container {
-        position: absolute;
-        bottom: 2rem;
-        left: 2rem;
-        right: 2rem;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-top: 1rem; /* 위쪽 패널과의 간격 */
     }
     .button-container button {
         padding: 0.75rem 1.5rem;
@@ -127,7 +136,7 @@
       text-align: center;
       padding: 1.5rem 0;
       font-size: 0.9rem;
-      position: fixed;
+      position: fixed; /* 고정 푸터는 그대로 유지 */
       bottom: 0;
       left: 0;
       width: 100%;
@@ -139,40 +148,45 @@
 <header>
   <h1>Resumate</h1>
   <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="job_choose.html">Resume</a>
-        <a href="ps_basic_info.html">Personal Statement</a>
-        <a href="faq.html">FAQ</a>
-        <a href="contact.html">Contact</a> 
-    </nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="personal_info.html">Resume</a>
+    <a href="ps_basic_info.html">Personal Statement</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a> 
+  </nav>
 </header>
 
 <main>
-    <div class="panel input-panel">
-        <h2>Summary Generation Information</h2>
-        <div class="form-group">
-            <label for="personality">My Personality (Keywords)</label>
-            <input type="text" id="personality" placeholder="e.g., Detail-oriented, Positive, Responsible">
+    <!-- ▼ 수정: 두 패널을 감싸는 래퍼 추가 -->
+    <div class="panels-wrapper">
+        <div class="panel input-panel">
+            <h2>Summary Generation Information</h2>
+            <div class="form-group">
+                <label for="personality">My Personality (Keywords)</label>
+                <input type="text" id="personality" placeholder="e.g., Detail-oriented, Positive, Responsible">
+            </div>
+            <div class="form-group">
+                <label for="strengths">My Strengths (Brief Description)</label>
+                <textarea id="strengths" placeholder="e.g., I have a strong ability to quickly learn and apply new concepts."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="workStyle">My Work Style</label>
+                <input type="text" id="workStyle" placeholder="e.g., I prefer to work systematically with a plan.">
+            </div>
+            <div class="form-group">
+                <label for="coreValues">My Core Values</label>
+                <input type="text" id="coreValues" placeholder="e.g., Trust, Collaboration, Growth">
+            </div>
+            <button id="generateBtn" class="generate-btn">Generate Summary with AI</button>
         </div>
-        <div class="form-group">
-            <label for="strengths">My Strengths (Brief Description)</label>
-            <textarea id="strengths" placeholder="e.g., I have a strong ability to quickly learn and apply new concepts."></textarea>
+        <div class="panel output-panel">
+            <h2>Summary Result - Review & Edit</h2>
+            <textarea id="summaryOutput" placeholder="Click 'Generate Summary with AI' to see a draft here. You can edit it freely afterwards."></textarea>
         </div>
-        <div class="form-group">
-            <label for="workStyle">My Work Style</label>
-            <input type="text" id="workStyle" placeholder="e.g., I prefer to work systematically with a plan.">
-        </div>
-        <div class="form-group">
-            <label for="coreValues">My Core Values</label>
-            <input type="text" id="coreValues" placeholder="e.g., Trust, Collaboration, Growth">
-        </div>
-        <button id="generateBtn" class="generate-btn">Generate Summary with AI</button>
     </div>
-    <div class="panel output-panel">
-        <h2>Summary Result - Review & Edit</h2>
-        <textarea id="summaryOutput" placeholder="Click 'Generate Summary with AI' to see a draft here. You can edit it freely afterwards."></textarea>
-    </div>
+
+    <!-- ▼ 수정: 버튼 컨테이너를 패널 래퍼와 동등한 레벨로 이동 -->
     <div class="button-container">
         <button id="backButton">Back</button>
         <div class="right-buttons">
