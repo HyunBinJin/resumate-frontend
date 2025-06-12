@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Statement Summary - Resumate</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 { margin: 0; }
+    nav a { color: white; text-decoration: none; margin-left: 1.5rem; }
+    
+    main {
+      max-width: 900px;
+      margin: 2rem auto 12rem;
+      background-color: white;
+      padding: 2rem 3rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .summary-header {
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    .summary-header h2 {
+      font-size: 1.8rem;
+      color: #2c3e50;
+      margin: 0 0 0.5rem 0;
+    }
+    .summary-header p {
+      font-size: 1.1rem;
+      color: #555;
+      margin: 0;
+    }
+    .qa-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+    }
+    .qa-item-question {
+        font-weight: 600;
+        flex-grow: 1;
+        margin-right: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .qa-item-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+    }
+    .qa-item-actions button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: white;
+    }
+    .edit-btn { background-color: #3498db; }
+    .delete-btn { background-color: #e74c3c; }
+
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2.5rem;
+    }
+    .button-container button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        color: white;
+        font-weight: 600;
+    }
+    #addQuestionBtn { background-color: #2ecc71; }
+    #generateAllBtn { background-color: #e67e22; }
+    #backButton { background-color: #95a5a6; }
+
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 1.5rem 0;
+      font-size: 0.9rem;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Resumate</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="info.html">Resume</a>
+      <a href="ps_basic_info.html">Personal Statement</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="summary-header">
+      <h2 id="companyNameDisplay"></h2>
+      <p id="jobPositionDisplay"></p>
+    </div>
+    <div id="qaListContainer">
+      </div>
+    <div class="button-container">
+        <button id="backButton">Back</button>
+        <button id="addQuestionBtn">Add New Question</button>
+        <button id="generateAllBtn">Generate & Preview All</button>
+    </div>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 Resumate. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'ps_qa_list';
+    const EDIT_INDEX_KEY = 'ps_edit_index';
+
+    // 문항 목록을 화면에 렌더링하는 함수 (생략 없는 전체 코드)
+    function renderList() {
+        const qaListContainer = document.getElementById('qaListContainer');
+        const qaList = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '[]');
+        
+        qaListContainer.innerHTML = '';
+
+        if (qaList.length === 0) {
+            qaListContainer.innerHTML = '<p style="text-align:center; color:#777;">No questions added yet. Click "Add New Question" to begin.</p>';
+            return;
+        }
+
+        qaList.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'qa-item';
+
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'qa-item-question';
+            questionDiv.textContent = `${index + 1}. ${item.question}`;
+            questionDiv.title = item.question; 
+
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'qa-item-actions';
+            actionsDiv.innerHTML = `
+                <button class="edit-btn" data-index="${index}">Edit</button>
+                <button class="delete-btn" data-index="${index}">Delete</button>
+            `;
+
+            div.appendChild(questionDiv);
+            div.appendChild(actionsDiv);
+            qaListContainer.appendChild(div);
+        });
+
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = this.getAttribute('data-index');
+                sessionStorage.setItem(EDIT_INDEX_KEY, index);
+                window.location.href = 'ps_question_input.html';
+            });
+        });
+
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete this question?')) {
+                    const index = parseInt(this.getAttribute('data-index'), 10);
+                    let list = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '[]');
+                    list.splice(index, 1);
+                    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+                    renderList();
+                }
+            });
+        });
+    }
+
+    window.onload = function() {
+        const companyName = sessionStorage.getItem('ps_companyName') || 'Company Name';
+        const jobPosition = sessionStorage.getItem('ps_jobPosition') || 'Job Position';
+        document.getElementById('companyNameDisplay').textContent = companyName;
+        document.getElementById('jobPositionDisplay').textContent = jobPosition;
+        renderList();
+    };
+
+    document.getElementById('addQuestionBtn').addEventListener('click', function() {
+        sessionStorage.removeItem(EDIT_INDEX_KEY);
+        window.location.href = 'ps_question_input.html';
+    });
+
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.location.href = 'ps_basic_info.html';
+    });
+
+    document.getElementById('generateAllBtn').addEventListener('click', async function() {
+        const generateBtn = this;
+        let qaList = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '[]');
+        
+        if (qaList.length === 0) {
+            alert('Please add at least one question.');
+            return;
+        }
+
+        generateBtn.disabled = true;
+        generateBtn.textContent = 'Generating...';
+
+        try {
+            const apiPromises = qaList.map((item, index) => {
+                if (item.answer) {
+                    return Promise.resolve(item);
+                }
+
+                const basicInfo = {
+                    companyName: sessionStorage.getItem('ps_companyName'),
+                    jobPosition: sessionStorage.getItem('ps_jobPosition'),
+                    companyInterest: sessionStorage.getItem('ps_companyInterest'),
+                    jobMotivation: sessionStorage.getItem('ps_jobMotivation'),
+                };
+                const fullPayload = { ...basicInfo, ...item };
+
+                return fetch('https://resumate-backend-lake.vercel.app/api/generate-ps-answer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(fullPayload)
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error(`API call failed for question ${index + 1}`);
+                    return response.json();
+                })
+                .then(result => {
+                    item.answer = result.answer;
+                    return item;
+                });
+            });
+
+            const updatedQaList = await Promise.all(apiPromises);
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(updatedQaList));
+            window.location.href = 'ps_preview.html';
+
+        } catch (error) {
+            console.error('Failed to generate all answers:', error);
+            alert('An error occurred while generating answers. Please try again.');
+            generateBtn.disabled = false;
+            generateBtn.textContent = 'Generate & Preview All';
+        }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Input - Personal Statement</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 { margin: 0; }
+        nav a { color: white; text-decoration: none; margin-left: 1.5rem; }
+
+        .main-wrapper {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            position: relative;
+            padding-bottom: 6rem;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto;
+            grid-template-areas:
+                "question question"
+                "experience competency";
+            gap: 2rem;
+        }
+        .panel {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+        }
+        .panel-question { grid-area: question; }
+        .panel-experience { grid-area: experience; }
+        .panel-competency { grid-area: competency; }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .panel h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c5282;
+            margin: 0;
+        }
+        .example-filler {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .example-filler select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .example-filler button {
+            background-color: #f0ad4e;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .example-filler button.active {
+            background-color: #d9534f;
+        }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group:last-child { margin-bottom: 0; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .form-group textarea { min-height: 120px; resize: vertical; }
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .checkbox-group label {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: normal;
+        }
+        .checkbox-group input {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        .button-container {
+            position: absolute;
+            bottom: 0;
+            left: 2rem;
+            right: 2rem;
+            display: flex;
+            justify-content: space-between;
+            padding-top: 2rem;
+        }
+        .button-container button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            font-weight: 600;
+        }
+        .left-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        #nextButton { background-color: #27ae60; }
+        #backToListButton { background-color: #95a5a6; }
+        #backToBasicButton { background-color: #7f8c8d; }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+      <h1>Resumate</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="info.html">Resume</a>
+        <a href="ps_basic_info.html">Personal Statement</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="grid-container">
+            <div class="panel panel-question">
+                <div class="panel-header">
+                    <h3>1. Statement Question</h3>
+                    <div class="example-filler">
+                        <select id="exampleSelector">
+                            <option value="">-- Select an Example --</option>
+                            <option value="softwareEngineer">Example: Software Engineer</option>
+                            <option value="salesManager">Example: Sales Manager</option>
+                            <option value="languageTeacher">Example: Language Teacher</option>
+                        </select>
+                        <button id="fillExampleBtn">Fill Form</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="question">Question</label>
+                    <textarea id="question" placeholder="Copy and paste the personal statement question here."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="wordCount">Required Word Count</label>
+                    <input type="number" id="wordCount" value="800">
+                </div>
+            </div>
+
+            <div class="panel panel-experience">
+                <h3>2. Core Experience (STAR Method)</h3>
+                <div class="form-group">
+                    <label for="jobExperience">Job/Career Experience</label>
+                    <textarea id="jobExperience" placeholder="Describe a specific situation, task, action, and result."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectExperience">Project/Extracurricular Activities</label>
+                    <textarea id="projectExperience" placeholder="Focus on your role and contributions."></textarea>
+                </div>
+            </div>
+
+            <div class="panel panel-competency">
+                <h3>3. Competencies & Strengths</h3>
+                <div class="form-group">
+                    <label>Select Key Competencies</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="competency" value="problem_solving"> Problem-Solving</label>
+                        <label><input type="checkbox" name="competency" value="communication"> Communication</label>
+                        <label><input type="checkbox" name="competency" value="leadership"> Leadership</label>
+                        <label><input type="checkbox" name="competency" value="analytical"> Analytical Thinking</label>
+                        <label><input type="checkbox" name="competency" value="foreign_language"> Foreign Language</label>
+                        <label><input type="checkbox" name="competency" value="responsibility"> Responsibility</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="competencyEpisode">Episode for Competencies</label>
+                    <textarea id="competencyEpisode" placeholder="Describe a specific episode where you demonstrated the selected competencies."></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <div class="left-buttons">
+                <button id="backToBasicButton">Back</button>
+                <button id="backToListButton">Back to List</button>
+            </div>
+            <button id="nextButton">Save Question</button>
+        </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Resumate. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const exampleData = {
+            softwareEngineer: {
+                question: "지원한 직무에 필요한 역량은 무엇이라고 생각하며, 그 역량을 갖추기 위해 어떤 노력을 해왔는지 구체적인 경험을 바탕으로 서술해 주십시오.",
+                wordCount: 1000,
+                jobExperience: "이전 회사에서 주문 시스템의 처리 속도가 느려 고객 불만이 증가하는 문제가 있었습니다. 성능 개선 프로젝트를 맡아, 데이터베이스 쿼리 튜닝, Redis 캐시 도입, RabbitMQ를 이용한 비동기 처리 로직 적용 등의 방법으로 평균 처리 시간을 62% 단축하고 관련 고객 불만을 85% 이상 감소시킨 경험이 있습니다.",
+                projectExperience: "React와 Node.js 기반의 풀스택 사이드 프로젝트 경험을 통해 클라이언트와 서버 간의 데이터 흐름 전반에 대한 이해를 높였습니다.",
+                competencies: ["problem_solving", "analytical", "responsibility"],
+                competencyEpisode: "주문 시스템 개선 당시, 간헐적으로 발생하는 지연 현상의 원인을 찾기 위해 시스템 로그를 심층적으로 분석하고 반복적인 부하 테스트를 진행했습니다. 그 결과 특정 조건에서만 발생하는 DB 커넥션 풀 고갈 문제를 발견하고, 커넥션 풀 설정을 최적화하여 문제를 해결했습니다. 이처럼 문제의 근본 원인을 논리적으로 분석하고 해결하는 역량을 갖추고 있습니다."
+            },
+            salesManager: {
+                question: "성공적인 영업 활동을 위해 가장 중요하다고 생각하는 역량은 무엇이며, 해당 역량을 발휘하여 목표를 달성했던 경험에 대해 기술해 주십시오.",
+                wordCount: 800,
+                jobExperience: "지난 분기, 신규 시장 개척을 담당하며 경쟁사 대비 낮은 브랜드 인지도로 초기 고객 확보에 어려움을 겪었습니다. (Situation) 저는 시장 데이터를 분석하여 경쟁사와 차별화되는 우리 제품의 핵심 가치를 '운영 효율성 증대'로 정의하고, 타겟 고객군을 중소 제조 기업으로 구체화했습니다. (Task) 이후 잠재 고객 리스트를 작성하고, 각 기업의 특성에 맞는 맞춤형 제안서와 기대효과 분석 자료를 준비하여 30개 이상의 기업에 직접 방문 및 프레젠테이션을 진행했습니다. (Action) 그 결과, 목표치의 120%를 상회하는 15개의 신규 계약을 체결하고, 해당 분기 팀 내 최고 성과를 달성했습니다. (Result)",
+                projectExperience: "",
+                competencies: ["analytical", "communication", "responsibility"],
+                competencyEpisode: "단순히 제품을 판매하는 것을 넘어, 고객의 비즈니스를 깊이 이해하고 신뢰 관계를 구축하는 것이 가장 중요하다고 생각합니다. 한 잠재 고객은 초기 도입 비용에 부담을 느껴 계약을 망설였습니다. 저는 해당 고객의 현금 흐름을 분석하여 초기 비용을 절감할 수 있는 장기 계약 모델을 제시하고, 도입 후 6개월 내 예상 ROI 리포트를 제공하여 설득에 성공했습니다. 이 경험을 통해 고객의 입장에서 문제를 바라보고 해결책을 제시하는 커뮤니케이션 역량을 기를 수 있었습니다."
+            },
+            languageTeacher: {
+                question: "효과적인 언어 교육을 위해 교사에게 가장 필요한 자질은 무엇이라고 생각하며, 본인이 그 자질을 갖추고 있음을 보여주는 경험을 서술해 주십시오.",
+                wordCount: 800,
+                jobExperience: "이전 어학원에서 성인 비즈니스 회화 중급반을 담당했을 때, 수강생들의 참여도가 점점 낮아지는 문제가 있었습니다. (Situation) 저는 수강생들의 학습 흥미를 다시 높이고 실질적인 회화 능력을 향상시키는 것을 목표로 삼았습니다. (Task) 기존의 교재 중심 수업에서 벗어나, 수강생들의 실제 직무와 관련된 롤플레잉, 토론, 발표 등 활동 중심의 수업으로 커리큘럼을 전면 재구성했습니다. 또한, 매주 개별 피드백 노트를 제공하여 각자의 강점과 약점을 명확히 인지하도록 도왔습니다. (Action) 3개월 후, 수강생들의 수업 만족도는 95% 이상으로 상승했으며, 반 전체의 회화 레벨 테스트 평균 점수가 20점 이상 향상되는 성과를 거두었습니다. (Result)",
+                projectExperience: "온라인 스터디 그룹을 만들어 한국 문화와 언어를 배우고 싶어 하는 외국인들에게 주 1회 무료로 한국어를 가르치는 활동을 1년간 진행했습니다. 이 과정에서 다양한 국적과 수준의 학습자를 대하며 유연한 교수법을 익혔습니다.",
+                competencies: ["communication", "problem_solving", "leadership"],
+                competencyEpisode: "효과적인 언어 교사란 단순히 지식을 전달하는 사람이 아니라, 학습자 개개인의 특성을 파악하고 그에 맞는 동기를 부여하는 '조력자'라고 생각합니다. 특히 내성적인 한 수강생이 수업 참여를 어려워하는 것을 보고, 그분이 관심 있는 분야(영화)에 대한 짧은 스피치를 준비하도록 격려하고 1:1로 발음과 표현을 교정해주었습니다. 성공적으로 발표를 마친 후 자신감을 얻은 그 수강생은 토론 수업에도 적극적으로 참여하기 시작했습니다. 이처럼 학습자와 공감하고 맞춤형 솔루션을 제공하는 것이 저의 가장 큰 강점입니다."
+            }
+        };
+
+        const fillExampleBtn = document.getElementById('fillExampleBtn');
+        const exampleSelector = document.getElementById('exampleSelector');
+        let currentExampleKey = null;
+
+        const allInputIds = ['question', 'wordCount', 'jobExperience', 'projectExperience', 'competencyEpisode'];
+
+        function clearForm() {
+            allInputIds.forEach(id => { document.getElementById(id).value = ''; });
+            document.querySelectorAll('input[name="competency"]').forEach(checkbox => { checkbox.checked = false; });
+        }
+        
+        function fillFormWithData(data) {
+            allInputIds.forEach(id => { document.getElementById(id).value = data[id] || ''; });
+            document.querySelectorAll('input[name="competency"]').forEach(checkbox => {
+                checkbox.checked = data.competencies.includes(checkbox.value);
+            });
+        }
+
+        fillExampleBtn.addEventListener('click', function() {
+            const selectedValue = exampleSelector.value;
+            if (!selectedValue) {
+                alert('Please select an example to fill.');
+                return;
+            }
+
+            if (currentExampleKey === selectedValue) {
+                clearForm();
+                this.textContent = 'Fill Form';
+                this.classList.remove('active');
+                exampleSelector.value = '';
+                currentExampleKey = null;
+            } else {
+                fillFormWithData(exampleData[selectedValue]);
+                this.textContent = 'Clear Example';
+                this.classList.add('active');
+                currentExampleKey = selectedValue;
+            }
+        });
+
+        exampleSelector.addEventListener('change', function() {
+            const btn = document.getElementById('fillExampleBtn');
+            if(this.value === currentExampleKey) {
+                btn.textContent = 'Clear Example';
+                btn.classList.add('active');
+            } else {
+                btn.textContent = 'Fill Form';
+                btn.classList.remove('active');
+            }
+        });
+        
+        const STORAGE_KEY = 'ps_qa_list';
+        const EDIT_INDEX_KEY = 'ps_edit_index';
+
+        window.onload = function() {
+            const editIndex = sessionStorage.getItem(EDIT_INDEX_KEY);
+            if (editIndex !== null) {
+                const qaList = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '[]');
+                const dataToEdit = qaList[editIndex];
+                if (dataToEdit) {
+                    fillFormWithData(dataToEdit);
+                }
+            }
+        };
+
+        function saveData() {
+            const questionData = {};
+            allInputIds.forEach(id => { questionData[id] = document.getElementById(id).value; });
+            questionData.competencies = Array.from(document.querySelectorAll('input[name="competency"]:checked')).map(el => el.value);
+            if (!questionData.question) { alert('The personal statement question is required.'); return null; }
+            let qaList = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '[]');
+            const editIndex = sessionStorage.getItem(EDIT_INDEX_KEY);
+            let savedIndex;
+            if (editIndex !== null) {
+                savedIndex = parseInt(editIndex, 10);
+                qaList[savedIndex] = questionData;
+                sessionStorage.removeItem(EDIT_INDEX_KEY);
+            } else {
+                qaList.push(questionData);
+                savedIndex = qaList.length - 1;
+            }
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(qaList));
+            return savedIndex;
+        }
+
+        document.getElementById('nextButton').addEventListener('click', function() {
+            const savedIndex = saveData();
+            if (savedIndex !== null) { window.location.href = `ps_result.html?index=${savedIndex}`; }
+        });
+        document.getElementById('backToListButton').addEventListener('click', function() {
+            sessionStorage.removeItem(EDIT_INDEX_KEY);
+            window.location.href = 'ps_summary.html';
+        });
+        document.getElementById('backToBasicButton').addEventListener('click', function() {
+            window.location.href = 'ps_basic_info.html';
+        });
+    </script>
+</body>
+</html>

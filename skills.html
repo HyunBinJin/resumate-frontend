@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skills Input - Resumate</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      width: 900px;
+      margin: 2rem auto 12rem; /* Footer height consideration */
+      background: white;
+      padding: 2rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      padding-bottom: 80px;
+    }
+
+    #contentWrapper {
+      display: flex;
+      gap: 2rem;
+      height: 500px; 
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #2c3e50;
+      text-align: center;
+    }
+
+    p {
+      margin: 0 0 1rem 0;
+      font-size: 0.95rem;
+      color: #555;
+      text-align: center;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    select {
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    #skillsList {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      height: 100%;
+      overflow-y: auto;
+    }
+    .category-container {
+        border-bottom: 1px solid #ddd;
+    }
+    .category-header {
+        width: 100%;
+        background-color: #f8f9fa;
+        padding: 12px 15px;
+        font-weight: bold;
+        font-size: 1rem;
+        text-align: left;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .category-header:hover {
+        background-color: #e9ecef;
+    }
+    .category-header::after {
+        content: '▼';
+        font-size: 0.8rem;
+        transition: transform 0.2s;
+    }
+    .category-header.active::after {
+        transform: rotate(180deg);
+    }
+    .skills-in-category {
+        display: none;
+        padding: 10px;
+        background-color: #fff;
+    }
+    .skills-in-category button {
+      width: 100%;
+      box-sizing: border-box;
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px 15px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-align: left;
+      transition: background-color 0.3s, color 0.3s;
+      margin-bottom: 8px;
+    }
+    .skills-in-category button:hover {
+        background-color: #e0f0ff;
+    }
+    .skills-in-category button.selected {
+        background-color: #3498db;
+        color: white;
+        border-color: #2980b9;
+        font-weight: bold;
+    }
+
+    #leftPanel, #rightPanel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #selectedSkills {
+      flex-grow: 1;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .button-container {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      left: 2rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .button-container button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        color: white;
+    }
+    .right-buttons {
+        display: flex;
+        gap: 10px;
+    }
+    #nextButton { background-color: #3498db; }
+    #previewBtn { background-color: #e67e22; }
+    #backButton { background-color: #95a5a6; }
+
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 1.5rem 0;
+      font-size: 0.9rem;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Resumate</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="info.html">Resume</a>
+    <a href="selfintroinput.html">Cover Letter</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <h2>What skills would you like to highlight?</h2>
+  <p>Choose from our pre-written examples below or write your own.</p>
+
+  <div id="contentWrapper">
+    <div id="leftPanel">
+      <label for="jobTitle">Select Job Title</label>
+      <select id="jobTitle">
+        <option value="">-- Select a job --</option>
+        <option value="salesManager">Sales Manager</option>
+        <option value="languageTeacher">Language Teacher</option>
+        <option value="itDeveloper">IT Developer / Software Engineer</option>
+      </select>
+      <div id="skillsList" aria-label="Skill options"></div>
+    </div>
+
+    <div id="rightPanel">
+      <label id="selectedSkillsLabel" for="selectedSkills">Selected Skills</label>
+      <textarea id="selectedSkills" placeholder="Selected skills will appear here. You can edit them directly."></textarea>
+    </div>
+  </div>
+
+  <div class="button-container">
+    <button id="backButton">Back</button>
+    <div class="right-buttons">
+        <button id="previewBtn">Preview</button>
+        <button id="nextButton">Next</button>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2025 Resumate. All rights reserved.</p>
+</footer>
+
+<script>
+  const jobTitleSelect = document.getElementById('jobTitle');
+  const skillsList = document.getElementById('skillsList');
+  const selectedSkillsTextarea = document.getElementById('selectedSkills');
+
+  // --- 스킬 데이터 (생략 없이 전체 내용 포함) ---
+  const jobSkills = {
+    salesManager: {
+        "Sales & Business Strategy": ['Market Analysis', 'Competitor Analysis', 'Sales Strategy Development', 'New Market Development', 'Profitability Analysis', 'Business Development', 'Sales Planning', 'Sales Forecasting'],
+        "Client Management & Relationship Building": ['CRM', 'Contract Negotiation', 'Lead Generation & Retention', 'Customer Segmentation', 'Customer Onboarding', 'Customer Service'],
+        "Leadership & Team Management": ['Sales Team Management', 'Performance Management', 'Coaching & Mentoring', 'Team Building', 'Motivation', 'Sales Training', 'Recruitment & Development'],
+        "Communication & Persuasion": ['Presentation', 'Persuasive Communication', 'Negotiation Skills', 'Internal & External Communication', 'Report Writing', 'Giving & Receiving Feedback'],
+        "Data Utilization & Analysis": ['Sales Data Analysis', 'KPI Management', 'Sales Pipeline Management', 'Salesforce', 'Excel', 'Tableau', 'Power BI'],
+        "Industry/Product Specific Knowledge": ['B2B Sales', 'B2C Sales', 'SaaS Sales', 'IT Solution Sales', 'Global Market Insight']
+    },
+    languageTeacher: {
+        "Teaching & Pedagogy": ['Learner-Centered Pedagogy', 'Communicative Language Teaching (CLT)', 'Curriculum & Material Development', 'Lesson Planning & Design', 'Online Teaching Platforms', 'Student Assessment & Feedback', 'Activity-Based Learning', 'Fostering Self-Directed Learning'],
+        "Student Management & Communication": ['Student Motivation', 'Positive Learning Environment', 'Adapting to Diverse Learning Styles', 'Classroom Management', 'Parent-Teacher Communication', 'Empathy & Active Listening'],
+        "Language & Cultural Competence": ['Native-level Fluency in Target Language', 'Korean Communication Skills', 'Intercultural Understanding & Sensitivity', 'Translation & Interpretation', 'Linguistic Knowledge'],
+        "Professionalism & Growth": ['Educational Research & Application', 'Problem-Solving Skills', 'Adaptability & Flexibility', 'MS Office Proficiency (PowerPoint, Word)', 'TESOL/TEFL/KFL Certified', 'Integrating Feedback for Improvement']
+    },
+    itDeveloper: {
+        "Core Technologies & Tools": ['Python', 'Java', 'C++', 'JavaScript', 'React', 'Spring', 'Node.js', 'SQL', 'NoSQL (MongoDB)', 'AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Git'],
+        "Development Methodologies & Processes": ['Agile Methodologies (Scrum, Kanban)', 'Test-Driven Development (TDD)', 'CI/CD', 'Code Review', 'Version Control (Git)', 'Technical Documentation'],
+        "Business & Problem-Solving Competencies": ['Problem-Solving', 'Logical Thinking', 'Data Analysis', 'UX/UI Understanding', 'Business Requirement Analysis', 'Continuous Learning & Research'],
+        "Collaboration & Communication Competencies": ['Cross-functional Collaboration', 'Technical Communication', 'Code Readability & Maintainability', 'Feedback Integration', 'Technical Leadership'],
+        "Domain-Specific Knowledge": ['Web/Server Security', 'Networking (TCP/IP, HTTP)', 'Performance Optimization', 'Scalable System Design', 'AI/Machine Learning', 'Data Engineering', 'Fintech Domain', 'E-commerce Domain']
+    }
+  };
+
+  let selectedSkills = new Set();
+  
+  window.onload = function() {
+    const savedSkills = JSON.parse(sessionStorage.getItem('skills') || '[]');
+    if (savedSkills.length > 0) {
+        selectedSkills = new Set(savedSkills);
+    }
+    
+    const savedJobTitleText = sessionStorage.getItem('jobTitle');
+    if (savedJobTitleText) {
+        for (let i = 0; i < jobTitleSelect.options.length; i++) {
+            if (jobTitleSelect.options[i].text === savedJobTitleText) {
+                jobTitleSelect.value = jobTitleSelect.options[i].value;
+                break;
+            }
+        }
+    }
+
+    const selectedJob = jobTitleSelect.value;
+    if (selectedJob) {
+        renderSkillsList(jobSkills[selectedJob]);
+    }
+    updateSelectedSkillsTextarea();
+  };
+
+  function updateSelectedSkillsTextarea() {
+    const skillsArray = Array.from(selectedSkills);
+    selectedSkillsTextarea.value = skillsArray.map(skill => `- ${skill}`).join('\n');
+  }
+
+  function renderSkillsList(categories) {
+    skillsList.innerHTML = '';
+    if (!categories) return;
+
+    for (const categoryName in categories) {
+        const categoryContainer = document.createElement('div');
+        categoryContainer.className = 'category-container';
+        const header = document.createElement('button');
+        header.className = 'category-header';
+        header.textContent = categoryName;
+        const skillsContainer = document.createElement('div');
+        skillsContainer.className = 'skills-in-category';
+
+        categories[categoryName].forEach(skill => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = skill;
+            if (selectedSkills.has(skill)) {
+                btn.classList.add('selected');
+            }
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (selectedSkills.has(skill)) {
+                    selectedSkills.delete(skill);
+                    btn.classList.remove('selected');
+                } else {
+                    selectedSkills.add(skill);
+                    btn.classList.add('selected');
+                }
+                updateSelectedSkillsTextarea();
+            });
+            skillsContainer.appendChild(btn);
+        });
+        
+        header.addEventListener('click', () => {
+            header.classList.toggle('active');
+            const content = header.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+
+        categoryContainer.appendChild(header);
+        categoryContainer.appendChild(skillsContainer);
+        skillsList.appendChild(categoryContainer);
+    }
+  }
+
+  jobTitleSelect.addEventListener('change', () => {
+    selectedSkills.clear();
+    updateSelectedSkillsTextarea();
+    const selectedJob = jobTitleSelect.value;
+    renderSkillsList(jobSkills[selectedJob]);
+  });
+  
+  function saveSkillsData() {
+      const skillsArray = Array.from(selectedSkills);
+      sessionStorage.setItem('skills', JSON.stringify(skillsArray));
+      const selectedOption = jobTitleSelect.options[jobTitleSelect.selectedIndex];
+      if (selectedOption && selectedOption.value) {
+        sessionStorage.setItem('jobTitle', selectedOption.text);
+      } else {
+        sessionStorage.setItem('jobTitle', '');
+      }
+  }
+  
+  document.getElementById('nextButton').addEventListener('click', function() {
+    saveSkillsData();
+    window.location.href = 'summary.html';
+  });
+  document.getElementById('previewBtn').addEventListener('click', function() {
+    saveSkillsData();
+    window.location.href = 'preview.html';
+  });
+  document.getElementById('backButton').addEventListener('click', function() {
+    window.location.href = 'experience_summary.html';
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Experience Summary - Resumate</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      padding: 2rem;
+      max-width: 800px;
+      margin: 2rem auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding-bottom: 10rem;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 1.5rem;
+      color: #2c3e50;
+    }
+
+    .entry {
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .entry-content {
+      max-width: 75%;
+    }
+
+    .entry h3 {
+      margin: 0;
+      color: #34495e;
+    }
+
+    .entry p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+      color: #555;
+    }
+
+    .entry-buttons {
+      text-align: right;
+    }
+
+    .entry-buttons button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin-left: 0.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .entry-buttons button:hover {
+      background-color: #2980b9;
+    }
+
+    .buttonContainer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+    }
+
+    .buttonContainer button {
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .buttonContainer .secondary {
+      background-color: #2ecc71;
+    }
+    .right-buttons {
+        display: flex;
+        gap: 10px;
+    }
+    .preview-btn {
+        background-color: #e67e22;
+    }
+    .next-btn {
+        background-color: #3498db;
+    }
+
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      margin: 0;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Resumate</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="info.html">Resume</a>
+    <a href="personal_statement_input.html">Personal Statement</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <h2>Experience Summary</h2>
+  <div id="experienceList"></div>
+  <div class="buttonContainer">
+    <button class="secondary" onclick="window.location.href='experience.html'">Add More</button>
+    <div class="right-buttons">
+        <button class="preview-btn" id="previewBtn">Go to Preview</button>
+        <button class="next-btn" onclick="window.location.href='skills.html'">Save & Next</button>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2025 Resumate. All rights reserved.</p>
+</footer>
+
+<script>
+  const container = document.getElementById('experienceList');
+
+  function render() {
+    container.innerHTML = '';
+    const data = JSON.parse(sessionStorage.getItem('experiences') || '[]');
+
+    if (data.length === 0) {
+      container.innerHTML = '<p style="text-align:center; color:#777;">No experience records added. Click "Add More" to start.</p>';
+    }
+
+    data.forEach((exp, idx) => {
+      const div = document.createElement('div');
+      div.className = 'entry';
+      div.innerHTML = `
+        <div class="entry-content">
+          <h3>${exp.title} at ${exp.company}</h3>
+          <p><small>${exp.start} ~ ${exp.end}</small></p>
+          <p>${(exp.desc || '').replace(/\n/g, '<br>')}</p>
+        </div>
+        <div class="entry-buttons">
+          <button onclick="edit(${idx})">Edit</button>
+          <button onclick="remove(${idx})">Delete</button>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function remove(index) {
+    if (!confirm('Are you sure you want to delete this experience?')) return;
+    let data = JSON.parse(sessionStorage.getItem('experiences') || '[]');
+    data.splice(index, 1);
+    sessionStorage.setItem('experiences', JSON.stringify(data));
+    render();
+  }
+
+  function edit(index) {
+    // Note: The 'experience.html' page needs logic to handle this index for editing.
+    sessionStorage.setItem('editExperienceIndex', index);
+    window.location.href = 'experience.html';
+  }
+
+  document.getElementById('previewBtn').addEventListener('click', () => {
+    window.location.href = 'preview.html';
+  });
+
+  render();
+</script>
+
+</body>
+</html>

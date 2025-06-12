@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Education - Resumate</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      margin: 0;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+    main {
+      padding: 2rem;
+      max-width: 800px;
+      margin: 2rem auto;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding-bottom: 10rem;
+    }
+    h2 {
+      font-size: 28px;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      color: #2c3e50;
+      text-align: center;
+    }
+    form div {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    input[type="text"],
+    select,
+    input[type="month"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    textarea {
+      min-height: 80px;
+    }
+    .row {
+      display: flex;
+      gap: 1rem;
+    }
+    .row > div {
+      flex: 1;
+    }
+    .buttonContainer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+      border: none;
+    }
+    button[type="submit"] {
+      background-color: #3498db;
+      color: white;
+    }
+    button.preview-btn {
+      background-color: #e67e22;
+      color: white;
+      margin-right: 10px;
+    }
+    button.secondary {
+      background-color: #ddd;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Resumate</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="info.html">Resume</a>
+    <a href="personal_statement_input.html">Personal Statement</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <h2>Education Information</h2>
+  <form id="educationForm">
+    <div>
+      <label for="schoolName">School Name *</label>
+      <input type="text" id="schoolName" placeholder="e.g. Seoul National University" required />
+    </div>
+
+    <div>
+      <label for="degree">Degree *</label>
+      <select id="degree" required>
+        <option value="">-- Select Degree --</option>
+        <option value="Associate Degree">Associate Degree</option>
+        <option value="Bachelor's Degree">Bachelor's Degree</option>
+        <option value="Master's Degree">Master's Degree</option>
+        <option value="Doctorate (PhD)">Doctorate (PhD)</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="fieldOfStudy">Field of Study *</label>
+      <input type="text" id="fieldOfStudy" placeholder="e.g. Computer Science" required />
+    </div>
+
+    <div class="row">
+      <div>
+        <label for="startDate">Start Date *</label>
+        <input type="month" id="startDate" required />
+      </div>
+      <div>
+        <label for="endDate">End Date *</label>
+        <input type="month" id="endDate" required />
+      </div>
+    </div>
+
+    <div>
+      <label for="description">Description</label>
+      <textarea id="description" placeholder="Briefly describe your education, achievements, activities, etc."></textarea>
+    </div>
+
+    <div class="buttonContainer">
+      <button type="button" class="secondary" id="backBtn">Back</button>
+      <div>
+        <button type="button" class="preview-btn" id="previewBtn">Save & Preview</button>
+        <button type="submit">Save & Next</button>
+      </div>
+    </div>
+  </form>
+</main>
+
+<footer>
+  <p>&copy; 2025 Resumate. All rights reserved.</p>
+</footer>
+
+<script>
+  const educationForm = document.getElementById('educationForm');
+  const backBtn = document.getElementById('backBtn');
+  const previewBtn = document.getElementById('previewBtn');
+
+  const saveEducationData = () => {
+    const newEdu = {
+      schoolName: document.getElementById('schoolName').value,
+      degree: document.getElementById('degree').value,
+      fieldOfStudy: document.getElementById('fieldOfStudy').value,
+      startDate: document.getElementById('startDate').value,
+      endDate: document.getElementById('endDate').value,
+      description: document.getElementById('description').value,
+    };
+
+    let educationList = JSON.parse(sessionStorage.getItem('educationList')) || [];
+
+    const editIndex = sessionStorage.getItem('editIndex');
+    if (editIndex !== null) {
+      educationList[editIndex] = newEdu; // 수정
+      sessionStorage.removeItem('editIndex');
+    } else {
+      educationList.push(newEdu); // 새 항목 추가
+    }
+
+    sessionStorage.setItem('educationList', JSON.stringify(educationList));
+  };
+
+  window.onload = function() {
+    const editIndex = sessionStorage.getItem('editIndex');
+    if (editIndex !== null) {
+      let educationList = JSON.parse(sessionStorage.getItem('educationList')) || [];
+      const edu = educationList[editIndex];
+      if (edu) {
+        document.getElementById('schoolName').value = edu.schoolName;
+        document.getElementById('degree').value = edu.degree;
+        document.getElementById('fieldOfStudy').value = edu.fieldOfStudy;
+        document.getElementById('startDate').value = edu.startDate;
+        document.getElementById('endDate').value = edu.endDate;
+        document.getElementById('description').value = edu.description;
+      }
+    }
+  };
+
+  educationForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    saveEducationData();
+    window.location.href = 'education_summary.html';
+  });
+  
+  previewBtn.addEventListener('click', function() {
+    saveEducationData();
+    window.location.href = 'preview.html';
+  });
+
+  backBtn.addEventListener('click', function() {
+    window.location.href = 'personal_info.html';
+  });
+</script>
+
+</body>
+</html>
